@@ -3,27 +3,22 @@
 
 function solveEquation(a, b, c) {
   let arr = [];
-  return "Ошибка, а не равно 0"
-  let D = b ** 2 - (4 * (a * c));
-  let x1;
-  let x2;
+  let d = b ** 2 - (4 * (a * c));
 
-  if (D > 0) {
+
+  if (d < 0) {
     return arr;
 
-  } else if (D === 0) {
-    x1 = -b / (2 * a);
+  } else if (d === 0) {
+    arr[0] = -b / (2 * a);
     return arr[0];
 
-  } else if (D > 0) {
-    x1 = (-b + Math.sqrt(d)) / (2 * a);
-    x2 = (-b - Math.sqrt(d)) / (2 * a);
-    return arr[0, 1]
+  } else if (d > 0) {
+    arr[0] = (-b + Math.sqrt(d)) / (2 * a);
+    arr[1] = (-b - Math.sqrt(d)) / (2 * a);
+    return `${arr[0]} ${arr[1]}`
   }
 
-
-  // код для задачи №1 писать здесь
-  return arr; // array
 }
 
 function calculateTotalMortgage(percent, contribution, amount, date) {
