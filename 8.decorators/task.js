@@ -2,16 +2,17 @@ function cachingDecoratorNew(func) {
   let cache = [];
 
   function wrapper(...args) {
-    const hash = args.join(","); // получаем правильный хэш
-    let objectInCache = cache.find((item) => item.hash == hash); // ищем элемент, хэш которого равен нашему хэшу
-    if (objectInCache !== undefined) { // если элемент не найден
-      console.log("Из кэша: " + objectInCache.result); // индекс нам известен, по индексу в массиве лежит объект, как получить нужное значение?
+    const hash = args.join(',');
+    let objectInCache = cache.find((item) => item.hash === hash);
+    if (objectInCache) {
+      console.log("Из кэша: " + objectInCache.result);
       return "Из кэша: " + objectInCache.result;
     }
-    let result = func(...args); // в кэше результата нет - придётся считать
-    cache.push({ hash, result }); // добавляем элемент с правильной структурой
+
+    let result = func(...args);
+    cache.push({ hash, result });
     if (cache.length > 5) {
-      cache.shift() // если слишком много элементов в кэше надо удалить самый старый (первый) 
+      cache.shift()
     }
     console.log("Вычисляем: " + result);
     return "Вычисляем: " + result;
@@ -23,22 +24,41 @@ function cachingDecoratorNew(func) {
 function debounceDecoratorNew(func) {
   let timerId = null;
   let firstTime = true;
+
   function wrapper(...args) {
-    if (firstTime) {
+    if (!firstTime) {
       firstTime = false;
-      func.apply(this, args)
+      func.apply(this, args);
     } else {
       clearTimeout(timerId);
       timerId = setTimeout(() => {
-        f.apply(this, args);
-        console.timeEnd("time");
+        firstTime = true;
+        return func.apply(this, args);
       })
     }
-
-    return wrapper;
   }
+  return wrapper;
 }
 
 function debounceDecorator2(func) {
-  // Ваш код
-}
+  let timer = null;
+  let timerHistory = true;
+  wrapp.count = 0
+
+  function wrapper(...args) {
+    wrapper.count.push(args);
+
+    if (!timerHistory) {
+      func.apply(this, args);
+    } else {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        timerHistory = true;
+        func.apply(this, args);
+      })
+    }
+
+    wrapper.count = [];
+    return wrapper;
+  }
+}  
