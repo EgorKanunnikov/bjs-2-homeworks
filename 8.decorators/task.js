@@ -21,7 +21,7 @@ function cachingDecoratorNew(func) {
 }
 
 
-function debounceDecoratorNew(func) {
+function debounceDecoratorNew(func, ms) {
   let timerId = null;
   let firstTime = true;
 
@@ -43,7 +43,6 @@ function debounceDecoratorNew(func) {
 function debounceDecorator2(func) {
   let timer = null;
   let timerHistory = true;
-  wrapp.count = 0
 
   function wrapper(...args) {
     wrapper.count.push(args);
@@ -57,8 +56,7 @@ function debounceDecorator2(func) {
         func.apply(this, args);
       })
     }
-
-    wrapper.count = [];
-    return wrapper;
   }
+  wrapper.count = 0;
+  return wrapper;
 }  
